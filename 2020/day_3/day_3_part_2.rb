@@ -1,3 +1,4 @@
+file='2020/day_3/day_3_input.txt'
 answer = []
 slopes = [
   {
@@ -27,7 +28,9 @@ slopes.each do |slope|
   position = 0
   line_count = -1
 
-  ARGF.each_line do |line|
+  f = File.open(file, "r")
+
+  f.each_line do |line|
     line_count += 1
     next if (line_count % slope[:down]) != 0
 
@@ -43,8 +46,9 @@ slopes.each do |slope|
     position += slope[:right]
   end
 
+  f.close
+
   answer << trees_hit
 end
 
-puts answer
-# puts answer.inject(:*)
+puts answer.inject(:*)
