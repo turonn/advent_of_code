@@ -1,6 +1,5 @@
-file='2020/day_7/input.txt'
-bag_rules = {}
-inside_sgb = ['shiny gold bag']
+file='2020/day_7/example.txt'
+all_bags = {}
 
 def strip_space_and_s(arr)
   arr.map do |value|
@@ -12,36 +11,59 @@ def strip_space_and_s(arr)
   end
 end
 
+def turn_into_hash(bags_array)
+  hash = {}
+  bags_array.each do |bag|
+    num_of_bags = bag[0]
+    type_of_bag = bag[2..-1]
+    hash[type_of_bag] = num_of_bags
+  end
+  hash
+end
+
 f = File.open(file, "r")
 f.each_line do |line|
   arr = line.strip.split('s contain ')
-  next if arr[1] == 'no other bags.'
-
-  key = arr[0]
-  values = arr[1].tr('0-9.', '').split(',')
-
-  bags = strip_space_and_s(values)
-
-  bag_rules[key] = bags
+  outer_bag = arr[0]
+  
+  if arr[1] == 'no other bags.'
+    inner_bags_hash = {}
+  else
+    inner_bags_array = strip_space_and_s(arr[1].tr('.', '').split(','))
+    inner_bags_hash = turn_into_hash(bags_array)
+  end
+  all_bags[outer_bag] = inner_bags_hash
 end
 
-previous_size = 0
+# {
+#   outer1 : {
+#     inner1 : num,
+#     inner2 : num
+#   },
+#   inner1 : {
+#   },
+#   inner2 : {
+#     inner3 : num,
+#     inner4 : num
+#   },
+#   inner3 : {}
+# }
 
-while inside_sgb > 0
-  old_inside_sgb = inside_sgb
-  old_bag_rules
-  inside_sgb = []
-
-  old_inside_sgb.each do |bag|
-    bag_rules.delete(bag)
-    old_bag_rules = bag_rules
-    old_bag_rules.each do |k, v|
-      if v.include?(bag)
-        inside_sgb << k
-        bag_rules.delete(k)
-      end
-    end
+def bags_inside_given_bag(all_bags, bag)
+  if all_bags.key?(bag)
+    all_bags[bag]
   end
 end
 
-puts lead_to_sgb.count - 1
+small_hash = { 'shiny gold bag': 1 }
+count = 0
+
+
+small_hash.each do |bag, num|
+  if all_bags.key?(bag)
+    working_array << num
+    search_inner_bag(bag)
+  else
+
+  end
+end
