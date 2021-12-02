@@ -1,4 +1,6 @@
-file='2020/day_7/example.txt'
+require_relative 'bag'
+
+file='2020/day_7/input.txt'
 all_bags = {}
 
 def strip_space_and_s(arr)
@@ -30,40 +32,14 @@ f.each_line do |line|
     inner_bags_hash = {}
   else
     inner_bags_array = strip_space_and_s(arr[1].tr('.', '').split(','))
-    inner_bags_hash = turn_into_hash(bags_array)
+    inner_bags_hash = turn_into_hash(inner_bags_array)
   end
-  all_bags[outer_bag] = inner_bags_hash
+  Bag.new(outer_bag, inner_bags_hash)
 end
 
-# {
-#   outer1 : {
-#     inner1 : num,
-#     inner2 : num
-#   },
-#   inner1 : {
-#   },
-#   inner2 : {
-#     inner3 : num,
-#     inner4 : num
-#   },
-#   inner3 : {}
-# }
-
-def bags_inside_given_bag(all_bags, bag)
-  if all_bags.key?(bag)
-    all_bags[bag]
-  end
-end
-
-small_hash = { 'shiny gold bag': 1 }
-count = 0
+starting_bag = { 'shiny gold bag': 1 }
 
 
-small_hash.each do |bag, num|
-  if all_bags.key?(bag)
-    working_array << num
-    search_inner_bag(bag)
-  else
+answer = Bag.total_count(starting_bag)
 
-  end
-end
+puts answer
