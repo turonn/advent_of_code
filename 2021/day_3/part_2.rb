@@ -20,7 +20,7 @@ def find_most_common_digit_at_index(master_list, index)
   counter >= master_list.size/2.0 ? 1 : 0
 end
 
-def arrays_that_match_index(master_list, index, digit_to_match)
+def arrays_that_match_digit_at_index(master_list, index, digit_to_match)
   master_list.select do |arr|
     arr[index].to_i == digit_to_match
   end
@@ -33,14 +33,13 @@ def find_last_array_standing(master_list, most_bool)
     digit = find_most_common_digit_at_index(master_list, index)
     most_bool ? digit_to_match = digit : digit_to_match = reverse_digit(digit)
 
-    master_list = arrays_that_match_index(master_list, index, digit_to_match)
+    master_list = arrays_that_match_digit_at_index(master_list, index, digit_to_match)
 
     index += 1
   end
 
   master_list.first
 end
-
 
 oxegen_answer = find_last_array_standing(orriginal_array, true)
 co2_answer = find_last_array_standing(orriginal_array, false)
