@@ -42,15 +42,29 @@ def accumulator_or_new_performed_lines(performed_lines, new_line, accumulator)
 end
 
 def get_accumulator(code_lines)
-  line = 0
-  performed_lines = [0]
-  accumulator = 0
+  final_line = code_lines.size + 1
+  answer = nil
 
-  while performed_lines.kind_of?(Array)
-    line, accumulator = perform_next_action(code_lines[line], line, accumulator)
-    performed_lines = accumulator_or_new_performed_lines(performed_lines, line, accumulator)
+  while answer.nil?
+    line = 0
+    performed_lines = [0]
+    accumulator = 0
+
+    while performed_lines.uniq.length == performed_lines.length
+      line, accumulator = perform_next_action(code_lines[line], line, accumulator)
+      
+      if line == final_line
+        answer = accumulator
+        break
+      end
+
+      performed_lines << line
+    end
+
+    flip_next_bit
   end
-  performed_lines
+
+  answer
 end
 
 puts get_accumulator(code_lines)
