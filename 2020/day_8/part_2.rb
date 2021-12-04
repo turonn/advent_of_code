@@ -1,4 +1,4 @@
-file='2020/day_8/example.txt'
+file='2020/day_8/input.txt'
 code_lines = {}
 accumulator = 0
 
@@ -20,7 +20,7 @@ def add_number_and_sym(num, arr)
   end
 end
 
-def perform_next_action(instructions, line_number, accumulator)
+def perform_action(instructions, line_number, accumulator)
   case instructions[0]
   when "nop"
     [(line_number + 1), accumulator]
@@ -42,29 +42,58 @@ def accumulator_or_new_performed_lines(performed_lines, new_line, accumulator)
 end
 
 def get_accumulator(code_lines)
-  final_line = code_lines.size + 1
-  answer = nil
+  final_line = code_lines.size
+  last_line_flipped = get_line_of_next_nop_or_jmp(code_lines, -1)
+  code_lines = flip_line(code_lines, last_line_flipped)
 
-  while answer.nil?
+  while true
     line = 0
-    performed_lines = [0]
+    performed_lines = []
     accumulator = 0
 
     while performed_lines.uniq.length == performed_lines.length
-      line, accumulator = perform_next_action(code_lines[line], line, accumulator)
+      line, accumulator = perform_action(code_lines[line], line, accumulator)
       
-      if line == final_line
-        answer = accumulator
-        break
-      end
+      return accumulator if line == final_line
 
       performed_lines << line
     end
+    code_lines, last_line_flipped = flip_next_line(code_lines, last_line_flipped)
+  end
+end
 
-    flip_next_bit
+def flip_next_line(code_lines, last_line_flipped)
+  code_lines = flip_line(code_lines, last_line_flipped)
+  current_line_to_flip = get_line_of_next_nop_or_jmp(code_lines, last_line_flipped)
+  
+  code_lines = flip_line(code_lines, current_line_to_flip)
+  [code_lines, current_line_to_flip]
+end
+
+def get_line_of_next_nop_or_jmp(code_lines, last_line_flipped)
+  search_start = last_line_flipped + 1
+  
+  (search_start...code_lines.length).to_a.each do |line| 
+    
+    return line if code_lines[line][0] == "nop" || code_lines[line][0] == "jmp"
+  end
+  0
+end
+
+def flip_line(code_lines, line)
+  instruction = code_lines[line]
+  
+  case instruction[0]
+  when "nop"
+    flipped_inst = "jmp"
+  when "jmp"
+    flipped_inst = "nop"
+  else
+    puts "something wrong on line #{line}"
   end
 
-  answer
+  code_lines[line] = [flipped_inst, instruction[1]]
+  code_lines
 end
 
 puts get_accumulator(code_lines)
