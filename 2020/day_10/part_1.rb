@@ -10,7 +10,7 @@ def parse_the_data(file)
   end
 end
 
-def find_the_answer(file, )
+def find_the_answer(file)
   var = parse_the_data(file)
   
 end
