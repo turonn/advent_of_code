@@ -1,5 +1,4 @@
 file='2021/day_12/input.txt'
-starting_points = []
 caves = []
 
 f = File.open(file, "r")
