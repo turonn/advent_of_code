@@ -4,14 +4,21 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     faraday (0.17.4)
       multipart-post (>= 1.2, < 3)
+    generator (0.0.1)
     launchy (2.5.0)
       addressable (~> 2.7)
+    lazy_priority_queue (0.1.1)
     multipart-post (2.1.1)
     public_suffix (4.0.6)
     rbplotly (0.1.2)
       faraday (~> 0.9)
       launchy (~> 2.4)
       uuidtools (~> 2.1)
+    rgl (0.5.7)
+      lazy_priority_queue (~> 0.1.0)
+      stream (~> 0.5.3)
+    stream (0.5.3)
+      generator
     uuidtools (2.2.0)
 
 PLATFORMS
@@ -19,6 +26,7 @@ PLATFORMS
 
 DEPENDENCIES
   rbplotly
+  rgl
 
 BUNDLED WITH
    2.1.4

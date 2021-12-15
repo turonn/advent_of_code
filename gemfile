@@ -1,1 +1,2 @@
 gem 'rbplotly'
+gem 'rgl'
