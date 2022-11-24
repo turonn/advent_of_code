@@ -1,10 +1,12 @@
-file='2019/day_1/example.txt'
-number_of_lines = 0
-counter = []
+file='2019/day_1/input.txt'
+fuel_requirements = []
 
 f = File.open(file, "r")
 f.each_line do |line|
-  arr = line.strip.split('')
-  
+  mass = line.strip.to_i
+  fuel = (mass / 3).floor - 2
+
+  fuel_requirements << fuel
 end
 
+puts fuel_requirements.sum
