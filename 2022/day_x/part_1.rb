@@ -1,10 +1,14 @@
-file='2022/day_x/example.txt'
-number_of_lines = 0
-counter = []
+def read_file(file)
+  contents = []
+  f = File.open(file, "r")
+  f.each_line do |line|
+    arr = line.strip.split('')
+    
+  end
 
-f = File.open(file, "r")
-f.each_line do |line|
-  arr = line.strip.split('')
-  
+  contents
 end
 
+use_input = false
+file = use_input ? '2022/day_9/input.txt' : '2022/day_9/example.txt'
+contents = read_file(file)
