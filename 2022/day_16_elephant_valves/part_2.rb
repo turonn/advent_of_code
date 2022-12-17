@@ -1,5 +1,5 @@
 class Valve
-  attr_accessor :is_released, :edges, :edge_indexes
+  attr_accessor :edge_indexes
   attr_reader :name, :index, :flow_rate, :edge_names
 
   def initialize(name, index, flow_rate, edge_names)
@@ -7,7 +7,6 @@ class Valve
     @index = index
     @flow_rate = flow_rate
     @edge_names = edge_names
-    @is_released = false
     Valve.all << self
   end
 
@@ -70,9 +69,9 @@ class Valve
   end
 
   def self.score_path_and_consider_for_max(path_pair)
-    path_1_max = path_pair[0].map { |step| step[:flow_rate] * step[:minutes_open] }.sum
-    path_2_max = path_pair[1].map { |step| step[:flow_rate] * step[:minutes_open] }.sum
-    contending_max = path_1_max + path_2_max
+    path_1_score = path_pair[0].map { |step| step[:flow_rate] * step[:minutes_open] }.sum
+    path_2_score = path_pair[1].map { |step| step[:flow_rate] * step[:minutes_open] }.sum
+    contending_max = path_1_score + path_2_score
 
     @@max_pressure_released = [Valve.max_pressure_released, contending_max].max
   end
@@ -100,15 +99,28 @@ class Valve
   end
 
   def self.filter_viable_paths_for_distinct_pairs
-    Valve.viable_paths.each do |path_1|
-      Valve.viable_paths.each do |path_2|
-        Valve.distinct_path_pairs << [path_1, path_2] if are_distinct_paths?(path_1, path_2)
-        break
+    possible_viable_paths = viable_paths.reject { |path| (path.length < 2) || (path.length == valves_of_interest.count) }
+    pvp_indexes = possible_viable_paths.length.times.map { |i| i }
+
+    possible_viable_paths.each_with_index do |path_1, i1|
+      valid_indexes = pvp_indexes[(i1 + 1)..-1]
+
+      valid_indexes.each do |i|
+        path_2 = possible_viable_paths[i]
+        Valve.distinct_path_pairs << [path_1, path_2] if _are_distinct_paths?(path_1, path_2)
       end
     end
   end
 
   private
+
+  def self._are_distinct_paths?(path_1, path_2)
+    p1_indexes = path_1.map { |step| step[:index] }
+    p2_indexes = path_2.map { |step| step[:index] }
+  
+    return true if (p1_indexes & p2_indexes).count == 1
+    false
+  end
 
   def self._look_around(current_path, unexamined_valves)
     potential_valves = _potential_next_valves(current_path.last, unexamined_valves)
@@ -170,11 +182,7 @@ def read_file(file)
   end
 end
 
-def are_distinct_paths?(path_1, path_2)
-  (path_1 && path_2).count == (path_1.count + path_2.count - 2)
-end
-
-use_input = false
+use_input = true
 file = use_input ? '2022/day_16/input.txt' : '2022/day_16/example.txt'
 read_file(file)
 
@@ -188,3 +196,5 @@ Valve.distinct_path_pairs.each do |path_pair|
 end
 
 puts Valve.max_pressure_released
+
+
