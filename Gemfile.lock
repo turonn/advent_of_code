@@ -3,6 +3,11 @@ GEM
   specs:
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    better_errors (2.10.1)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
+      rouge (>= 1.0.0)
+    erubi (1.13.0)
     faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
     launchy (2.5.2)
@@ -10,6 +15,7 @@ GEM
     multipart-post (2.4.1)
     pairing_heap (3.1.0)
     public_suffix (6.0.1)
+    rack (3.1.8)
     rbplotly (0.1.2)
       faraday (~> 0.9)
       launchy (~> 2.4)
@@ -19,6 +25,7 @@ GEM
       pairing_heap (>= 0.3, < 4.0)
       rexml (~> 3.2, >= 3.2.4)
       stream (~> 0.5.3)
+    rouge (4.5.1)
     stream (0.5.5)
     uuidtools (2.2.0)
 
@@ -26,6 +33,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  better_errors
   rbplotly
   rgl
 
