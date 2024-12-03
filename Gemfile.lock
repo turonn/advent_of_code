@@ -1,24 +1,25 @@
 GEM
+  remote: https://rubygems.org/
   specs:
-    addressable (2.7.0)
-      public_suffix (>= 2.0.2, < 5.0)
-    faraday (0.17.4)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
+    faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
-    generator (0.0.1)
-    launchy (2.5.0)
-      addressable (~> 2.7)
-    lazy_priority_queue (0.1.1)
-    multipart-post (2.1.1)
-    public_suffix (4.0.6)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    multipart-post (2.4.1)
+    pairing_heap (3.1.0)
+    public_suffix (6.0.1)
     rbplotly (0.1.2)
       faraday (~> 0.9)
       launchy (~> 2.4)
       uuidtools (~> 2.1)
-    rgl (0.5.7)
-      lazy_priority_queue (~> 0.1.0)
+    rexml (3.3.9)
+    rgl (0.6.6)
+      pairing_heap (>= 0.3, < 4.0)
+      rexml (~> 3.2, >= 3.2.4)
       stream (~> 0.5.3)
-    stream (0.5.3)
-      generator
+    stream (0.5.5)
     uuidtools (2.2.0)
 
 PLATFORMS
