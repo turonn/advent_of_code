@@ -1,4 +1,4 @@
-file = '2021/day_7/example.txt'
+file = '2024/day_7/example.txt'
 number_of_lines = 0
 counter = []
 
