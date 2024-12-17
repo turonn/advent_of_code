@@ -2,14 +2,14 @@
 
 class Point
   attr_reader :x, :y, :shape
-  attr_accessor :score, :been_visited, :direction, :prior_scores
+  attr_accessor :score, :been_visited, :direction, :prior_points
 
   def initialize(x,y,shape)
     @x = x
     @y = y
     @been_visited = false
     @shape = shape
-    @prior_scores = []
+    @prior_points = []
 
     case shape
     when 'S'
@@ -83,32 +83,18 @@ class Maze
   end
 
   def count_seats
-    seats = []
+    seats = Set.new
     current_points = [@goal]
 
     until current_points.empty?
-      seats += current_points
-
-      current_points = current_points.flat_map do |cur_point| 
-        nei_points = _neighbor_nei_(cur_point.x, cur_point.y)
-        nei_points.select { |point| cur_point.prior_scores.include?(point.score) }
-      end
+      seats.merge(current_points)
+      current_points = current_points.flat_map { |p| p.prior_points }
     end
 
-    seats.uniq.count
+    seats.map { |s| [s.x, s.y] }
   end
 
   private
-
-  # @return [Array<Point>]
-  def _neighbor_points(x, y)
-    [
-      @rows[y + 1][x    ],
-      @rows[y - 1][x    ],
-      @rows[y    ][x + 1],
-      @rows[y    ][x - 1]
-    ]
-  end
   
   def _visit_next_point
     point = _next_point_to_visit
@@ -139,16 +125,18 @@ class Maze
 
     # check for convergence on on something already scored better.
     if point.score == score - 1000 && RIGHT_ANGLES[point.direction].include?(direction)
-      point.prior_scores << prior_point.score
+      # but only if the lower scored one is turning
+      point.prior_points << prior_point if _is_turning?(point, direction)
     end
 
     return if point.score < score
     
     # check for convergance on somethign already scored worse.
     if point.score == score + 1000 && RIGHT_ANGLES[point.direction].include?(direction)
-      point.prior_scores << prior_point.score
+      # but only if the lower scored one is turning
+      point.prior_points << prior_point if _is_turning?(prior_point, direction)
     else
-      point.prior_scores = [prior_point.score]
+      point.prior_points = [prior_point]
     end
 
     point.score = score
@@ -186,27 +174,7 @@ maze = Maze.new(rows, goal)
 
 pp maze.find_path_to_goal
 
-# def print_aligned_scores(rows)
-#   rows.each do |row|
-#     formatted_row = row.map do |point|
-#       if point.is_wall?
-#         "  ###" # Represents a wall
-#       elsif point.shape == "E" || point.shape == "S"
-#         format("%5s", point.shape) # Start or Goal shape
-#       elsif point.score.infinite?
-#         "  INF" # Represents Infinity
-#       else
-#         format("%05d", point.score) # Leading zeros for scores < 5 characters
-#       end
-#     end
-#     puts formatted_row.join(" ")
-#   end
-# end
-
-# # Call the function with the maze rows
-# print_aligned_scores(rows)
-
-
 pp maze.count_seats
+
 
 # 499 is too high
