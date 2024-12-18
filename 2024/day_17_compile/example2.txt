@@ -12,3 +12,7 @@ Program: 2,4,1,2,7,5,0,3,4,7,1,7,5,5,3,0
 1,7, => B = B ^ 7
 5,5, => output B % 8
 3,0 => back to the beginning
+
+B = (A % 8) ^ 2
+C = A / 2**C
+A = A / 8
